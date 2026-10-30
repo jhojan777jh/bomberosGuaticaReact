@@ -17,6 +17,8 @@ const ProtectedRoute = ({ children }) => {
   return isAuthenticated ? children : <Navigate to="/login" />
 }
 
+const basename = import.meta.env.BASE_URL.replace(/\/$/, '')
+
 const AppRoutes = () => {
   const { isAuthenticated } = useAuth()
   return (
@@ -36,7 +38,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <ThemeProvider>
       <AuthProvider>
-        <BrowserRouter>
+        <BrowserRouter basename={basename}>
           <AppRoutes />
         </BrowserRouter>
       </AuthProvider>

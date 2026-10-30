@@ -1,7 +1,8 @@
 import { useEffect } from 'react'
 
 const SITE_NAME = 'Cuerpo de Bomberos de Guática'
-const SITE_URL = 'https://jhojan777jh.github.io/bomberosGuaticaReact'
+const SITE_URL = 'https://jhojan777jh.github.io'
+const BASE_PATH = import.meta.env.BASE_URL
 
 const upsertMeta = (selector, attributes) => {
   let element = document.head.querySelector(selector)
@@ -30,7 +31,9 @@ export default function useSEO({ title, description, noindex = false, path }) {
       content: noindex ? 'noindex, nofollow' : 'index, follow',
     })
 
-    const url = `${SITE_URL}${path ?? window.location.pathname}`
+    const url = path
+      ? `${SITE_URL}${BASE_PATH}${path.replace(/^\//, '')}`
+      : `${window.location.origin}${window.location.pathname}`
     upsertMeta('meta[property="og:url"]', { property: 'og:url', content: url })
 
     let canonical = document.head.querySelector('link[rel="canonical"]')
