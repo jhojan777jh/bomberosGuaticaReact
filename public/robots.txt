@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /bomberosGuaticaReact/dashboard
+Disallow: /bomberosGuaticaReact/tasks
+Disallow: /bomberosGuaticaReact/training
+Disallow: /bomberosGuaticaReact/donations
+Disallow: /bomberosGuaticaReact/users
+
+Sitemap: https://jhojan777jh.github.io/bomberosGuaticaReact/sitemap.xml

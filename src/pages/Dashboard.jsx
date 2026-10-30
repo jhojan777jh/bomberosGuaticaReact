@@ -1,105 +1,127 @@
-﻿import { useState, useEffect } from 'react'
-import { Container, Row, Col, Card, Table, Badge, Button } from 'react-bootstrap'
-import { Speedometer2, ListTask, Mortarboard, Heart, People, PlusCircle } from 'react-bootstrap-icons'
+import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import API from '../services/api'
+import useSEO from '../hooks/useSEO'
+import { PageHeader, StatCard, StatusBadge } from '../components/ui'
+import ThiingIcon from '../components/ThiingIcon'
+
+const statusMap = {
+  pending: { label: 'Pendiente', tone: 'neutral' },
+  in_progress: { label: 'En curso', tone: 'warning' },
+  completed: { label: 'Completada', tone: 'success' },
+}
 
 const Dashboard = () => {
   const [stats, setStats] = useState({ usuarios: 0, capacitaciones: 0, donaciones: 0, tareas: 0 })
   const [tasks, setTasks] = useState([])
   const [trainings, setTrainings] = useState([])
 
-  useEffect(() => {
-    loadData()
-  }, [])
+  useSEO({
+    title: 'Dashboard',
+    description: 'Resumen operativo del Cuerpo de Bomberos de Guática: usuarios, capacitaciones, donaciones y tareas.',
+    noindex: true,
+  })
 
   const loadData = async () => {
     const statsRes = await API.content.stats()
     if (statsRes.success) setStats(statsRes.stats)
-    
+
     const tasksRes = await API.tasks.get()
     if (tasksRes.success) setTasks(tasksRes.tasks)
-    
+
     const trainingsRes = await API.training.get()
     if (trainingsRes.success) setTrainings(trainingsRes.trainings)
   }
 
-  return (
-    <Container fluid className="p-4">
-      <h2 className="mb-4"><Speedometer2 /> Dashboard <Badge bg="warning" text="dark">VISUAL</Badge></h2>
-      
-      <Row className="mb-4">
-        <Col md={3}>
-          <Card className="text-center shadow-sm">
-            <Card.Body>
-              <People size={40} color="#b30000" />
-              <h3 className="mt-2">{stats.usuarios}</h3>
-              <p className="text-muted mb-0">Usuarios</p>
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col md={3}>
-          <Card className="text-center shadow-sm">
-            <Card.Body>
-              <Mortarboard size={40} color="#b30000" />
-              <h3 className="mt-2">{stats.capacitaciones}</h3>
-              <p className="text-muted mb-0">Capacitaciones</p>
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col md={3}>
-          <Card className="text-center shadow-sm">
-            <Card.Body>
-              <Heart size={40} color="#b30000" />
-              <h3 className="mt-2">{stats.donaciones}</h3>
-              <p className="text-muted mb-0">Donaciones</p>
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col md={3}>
-          <Card className="text-center shadow-sm">
-            <Card.Body>
-              <ListTask size={40} color="#b30000" />
-              <h3 className="mt-2">{stats.tareas}</h3>
-              <p className="text-muted mb-0">Tareas</p>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
+  useEffect(() => {
+    loadData()
+  }, [])
 
-      <Row>
-        <Col lg={6}>
-          <Card className="shadow-sm mb-4">
-            <Card.Header style={{ background: '#b30000', color: 'white' }}>
-              <ListTask /> Tareas Recientes
-            </Card.Header>
-            <Card.Body>
-              {tasks.slice(0, 3).map(task => (
-                <div key={task.id} className="border-bottom py-2">
-                  <strong>{task.title}</strong> <Badge bg={task.status === 'completed' ? 'success' : task.status === 'in_progress' ? 'warning' : 'secondary'}>{task.status}</Badge>
-                  <br />
-                  <small className="text-muted">{task.description}</small>
-                </div>
-              ))}
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col lg={6}>
-          <Card className="shadow-sm mb-4">
-            <Card.Header style={{ background: '#b30000', color: 'white' }}>
-              <Mortarboard /> Próximas Capacitaciones
-            </Card.Header>
-            <Card.Body>
-              {trainings.map(tr => (
-                <div key={tr.id} className="border-bottom py-2">
-                  <strong>{tr.name}</strong><br />
-                  <small className="text-muted">{tr.date} - {tr.time} | Cupos: {tr.enrolled}/{tr.capacity}</small>
-                </div>
-              ))}
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-    </Container>
+  return (
+    <div>
+      <PageHeader
+        icon="dashboard"
+        title="Dashboard"
+        subtitle="Resumen operativo del Cuerpo de Bomberos de Guática"
+      />
+
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <StatCard icon="users" label="Usuarios" value={stats.usuarios} hint="Activos" delay={0} />
+        <StatCard icon="training" label="Capacitaciones" value={stats.capacitaciones} hint="Programadas" delay={80} />
+        <StatCard icon="donations" label="Donaciones" value={stats.donaciones} hint="Registradas" delay={160} />
+        <StatCard icon="tasks" label="Tareas" value={stats.tareas} hint="En gestión" delay={240} />
+      </div>
+
+      <div className="mt-6 grid grid-cols-1 gap-5 lg:grid-cols-2">
+        <section className="glass animate-fade-up overflow-hidden" style={{ animationDelay: '120ms' }}>
+          <div className="flex items-center justify-between border-b border-line px-5 py-4">
+            <h2 className="flex items-center gap-2 font-display text-base font-bold text-fg">
+              <ThiingIcon name="tasks" size={26} /> Tareas recientes
+            </h2>
+            <Link to="/tasks" className="text-xs font-semibold text-accent transition hover:text-accent-strong">
+              Ver todas →
+            </Link>
+          </div>
+          <div className="divide-y divide-line">
+            {tasks.length === 0 ? (
+              <p className="px-5 py-8 text-center text-sm text-muted">Sin tareas registradas.</p>
+            ) : (
+              tasks.slice(0, 3).map((task) => {
+                const status = statusMap[task.status] ?? statusMap.pending
+                return (
+                  <div key={task.id} className="px-5 py-3.5 transition hover:bg-hover">
+                    <div className="flex items-center justify-between gap-3">
+                      <p className="font-semibold text-fg">{task.title}</p>
+                      <StatusBadge tone={status.tone}>{status.label}</StatusBadge>
+                    </div>
+                    <p className="mt-0.5 text-sm text-muted">{task.description}</p>
+                  </div>
+                )
+              })
+            )}
+          </div>
+        </section>
+
+        <section className="glass animate-fade-up overflow-hidden" style={{ animationDelay: '200ms' }}>
+          <div className="flex items-center justify-between border-b border-line px-5 py-4">
+            <h2 className="flex items-center gap-2 font-display text-base font-bold text-fg">
+              <ThiingIcon name="training" size={26} /> Próximas capacitaciones
+            </h2>
+            <Link to="/training" className="text-xs font-semibold text-accent transition hover:text-accent-strong">
+              Ver todas →
+            </Link>
+          </div>
+          <div className="divide-y divide-line">
+            {trainings.length === 0 ? (
+              <p className="px-5 py-8 text-center text-sm text-muted">Sin capacitaciones programadas.</p>
+            ) : (
+              trainings.map((tr) => {
+                const pct = tr.capacity > 0 ? Math.min(100, Math.round((tr.enrolled / tr.capacity) * 100)) : 0
+                return (
+                  <div key={tr.id} className="px-5 py-3.5 transition hover:bg-hover">
+                    <div className="flex items-center justify-between gap-3">
+                      <p className="font-semibold text-fg">{tr.name}</p>
+                      <span className="text-xs font-semibold text-muted">
+                        {tr.enrolled}/{tr.capacity}
+                      </span>
+                    </div>
+                    <p className="mt-0.5 text-sm text-muted">
+                      {tr.date} · {tr.time}
+                    </p>
+                    <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-track">
+                      <div
+                        className="h-full rounded-full bg-gradient-to-r from-brand-500 to-brand-700"
+                        style={{ width: `${pct}%` }}
+                      />
+                    </div>
+                  </div>
+                )
+              })
+            )}
+          </div>
+        </section>
+      </div>
+    </div>
   )
 }
 

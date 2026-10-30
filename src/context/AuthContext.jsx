@@ -8,15 +8,18 @@ export const useAuth = () => {
   return context
 }
 
+const DEV_USER = { id: 1, username: 'admin', role: 'Administrador', name: 'Administrador' }
+
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null)
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const isDev = import.meta.env.DEV
+  const [user, setUser] = useState(isDev ? DEV_USER : null)
+  const [isAuthenticated, setIsAuthenticated] = useState(isDev)
 
   const login = async (credentials) => {
     console.log('[API STUB] POST /auth/login - TODO: Implementar backend', credentials)
     await new Promise(r => setTimeout(r, 300))
     if (credentials.username === 'admin' && credentials.password === 'admin') {
-      const userData = { id: 1, username: 'admin', role: 'Administrador', name: 'Administrador' }
+      const userData = DEV_USER
       setUser(userData)
       setIsAuthenticated(true)
       return { success: true, user: userData }
