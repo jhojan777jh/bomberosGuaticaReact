@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Cuerpo de Bomberos de Guática</title>
+  <desc id="desc">Panel administrativo del Cuerpo de Bomberos de Guática, Risaralda, Colombia.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#450a0a" />
+      <stop offset="0.55" stop-color="#991b1b" />
+      <stop offset="1" stop-color="#dc2626" />
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ff9d9d" stop-opacity="0.55" />
+      <stop offset="1" stop-color="#ff9d9d" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)" />
+  <circle cx="1010" cy="120" r="280" fill="url(#glow)" />
+  <circle cx="150" cy="560" r="220" fill="url(#glow)" opacity="0.6" />
+  <g transform="translate(90 150)">
+    <path fill="#ffffff" d="M64 0 12 22v34c0 30 22 58 52 66 30-8 52-36 52-66V22L64 0Zm0 18 42 18v20c0 22-16 43-42 50-26-7-42-28-42-50V36l42-18Z" />
+    <path fill="#ffffff" d="M64 36c-9 11-18 20-18 32a18 18 0 0 0 36 0c0-6-3-11-7-16-1 6-4 9-8 11 2-9-1-19-3-27Z" />
+  </g>
+  <text x="90" y="360" fill="#ffffff" font-family="Manrope, Inter, system-ui, sans-serif" font-size="64" font-weight="800">
+    CUERPO DE BOMBEROS
+  </text>
+  <text x="90" y="432" fill="#ffc6c6" font-family="Manrope, Inter, system-ui, sans-serif" font-size="52" font-weight="700">
+    DE GUÁTICA
+  </text>
+  <text x="90" y="500" fill="#ffe0e0" font-family="Inter, system-ui, sans-serif" font-size="28" font-weight="500">
+    Panel administrativo · Gestión de emergencias y comunidad
+  </text>
+  <rect x="90" y="540" width="240" height="6" rx="3" fill="#ff9d9d" />
+</svg>
