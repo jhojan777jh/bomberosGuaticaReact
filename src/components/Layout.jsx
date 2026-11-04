@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate, NavLink } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import ThiingIcon from './ThiingIcon'
@@ -26,7 +26,6 @@ const Layout = ({ children }) => {
   const { logout, user } = useAuth()
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
-  const isDev = import.meta.env.DEV
 
   useEffect(() => {
     const onKeyDown = (event) => {
@@ -99,7 +98,7 @@ const Layout = ({ children }) => {
           <ThiingIcon name="logout" size={20} /> Cerrar Sesión
         </button>
         <div className="mt-3 text-center text-[10px] uppercase tracking-widest text-subtle">
-          Backend pendiente
+          Supabase · datos en vivo
         </div>
       </div>
     </div>
@@ -185,7 +184,7 @@ const Layout = ({ children }) => {
                 <ThemeToggle />
                 <div className="flex items-center gap-2 rounded-full border border-line bg-surface px-3 py-1.5 text-xs text-muted backdrop-blur-md">
                   <span className="h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_8px_2px_rgba(16,185,129,0.4)]" />
-                  {isDev ? 'Modo desarrollo · sin login' : 'Sesión activa'}
+                  Sesión activa
                 </div>
               </div>
             </header>
