@@ -12,6 +12,7 @@
     "deploy": "npm run build && gh-pages -d dist --dotfiles"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.119.0",
     "chart.js": "^4.6.1",
     "react": "^19.3.1",
     "react-bootstrap-icons": "^1.11.6",

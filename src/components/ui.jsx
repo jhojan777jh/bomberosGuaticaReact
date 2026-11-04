@@ -1,6 +1,7 @@
+import { useEffect } from 'react'
 import ThiingIcon from './ThiingIcon'
 
-export const PageHeader = ({ icon, title, subtitle, action, badge = 'VISUAL' }) => (
+export const PageHeader = ({ icon, title, subtitle, action, badge = null }) => (
   <div className="mb-6 flex animate-fade-up flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
     <div className="flex items-start gap-3">
       <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-brand-500/10 text-accent ring-1 ring-inset ring-brand-500/20">
@@ -49,4 +50,61 @@ export const EmptyState = ({ icon = 'empty', title, description, action }) => (
     {description && <p className="mt-1 max-w-sm text-sm text-muted">{description}</p>}
     {action && <div className="mt-5">{action}</div>}
   </div>
+)
+
+export const Alert = ({ tone = 'danger', children }) => {
+  if (!children) return null
+  const tones = {
+    danger: 'border-brand-500/30 bg-brand-500/10 text-accent',
+    success: 'border-emerald-500/30 bg-emerald-500/10 text-emerald-600',
+  }
+  return (
+    <div role="alert" className={`rounded-xl border px-3 py-2 text-sm ${tones[tone] ?? tones.danger}`}>
+      {children}
+    </div>
+  )
+}
+
+export const Modal = ({ open, onClose, title, children }) => {
+  useEffect(() => {
+    if (!open) return undefined
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') onClose()
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [open, onClose])
+
+  if (!open) return null
+
+  return (
+    <div className="fixed inset-0 z-[70] flex items-center justify-center p-4">
+      <div
+        aria-hidden="true"
+        onClick={onClose}
+        className="absolute inset-0 bg-slate-950/60 backdrop-blur-sm"
+      />
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-label={title}
+        className="glass relative max-h-[90vh] w-full max-w-lg animate-fade-up overflow-y-auto p-6"
+      >
+        <div className="mb-4 flex items-center justify-between gap-3">
+          <h2 className="font-display text-lg font-bold text-fg">{title}</h2>
+          <button type="button" onClick={onClose} aria-label="Cerrar" className="btn-ghost px-2.5 py-2">
+            <ThiingIcon name="close" size={18} />
+          </button>
+        </div>
+        {children}
+      </div>
+    </div>
+  )
+}
+
+export const Field = ({ label, children }) => (
+  <label className="block">
+    <span className="mb-1.5 block text-sm font-medium text-fg">{label}</span>
+    {children}
+  </label>
 )

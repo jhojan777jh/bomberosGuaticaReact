@@ -1,4 +1,4 @@
-﻿import { useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import useSEO from '../hooks/useSEO'
@@ -6,7 +6,7 @@ import ThiingIcon from '../components/ThiingIcon'
 import ThemeToggle from '../components/ThemeToggle'
 
 const Login = () => {
-  const [credentials, setCredentials] = useState({ username: '', password: '' })
+  const [credentials, setCredentials] = useState({ email: '', password: '' })
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const { login } = useAuth()
@@ -62,18 +62,18 @@ const Login = () => {
 
           <div className="space-y-4">
             <div>
-              <label htmlFor="username" className="mb-1.5 block text-sm font-medium text-fg">
-                Usuario
+              <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-fg">
+                Correo electrónico
               </label>
               <input
-                id="username"
-                type="text"
-                autoComplete="username"
-                value={credentials.username}
-                onChange={(e) => setCredentials({ ...credentials, username: e.target.value })}
+                id="email"
+                type="email"
+                autoComplete="email"
+                value={credentials.email}
+                onChange={(e) => setCredentials({ ...credentials, email: e.target.value })}
                 required
                 className="input-glass"
-                placeholder="admin"
+                placeholder="nombre@bomberosguatica.org"
               />
             </div>
 
@@ -108,7 +108,7 @@ const Login = () => {
           </div>
 
           <div className="mt-5 rounded-xl border border-line bg-surface-soft px-3 py-2 text-center text-xs text-muted">
-            <em>Modo visual · Demo: admin / admin · Backend pendiente</em>
+            Acceso con Supabase Auth. Crea los usuarios desde el panel de Supabase.
           </div>
         </form>
       </div>

@@ -13,14 +13,28 @@ import Users from './pages/Users'
 import Layout from './components/Layout'
 
 const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated, loading } = useAuth()
+  if (loading) {
+    return (
+      <div className="grid min-h-screen place-items-center">
+        <p className="text-sm text-muted">Cargando sesión…</p>
+      </div>
+    )
+  }
   return isAuthenticated ? children : <Navigate to="/login" />
 }
 
 const basename = import.meta.env.BASE_URL.replace(/\/$/, '')
 
 const AppRoutes = () => {
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated, loading } = useAuth()
+  if (loading) {
+    return (
+      <div className="grid min-h-screen place-items-center">
+        <p className="text-sm text-muted">Cargando sesión…</p>
+      </div>
+    )
+  }
   return (
     <Routes>
       <Route path="/login" element={isAuthenticated ? <Navigate to="/dashboard" /> : <Login />} />
@@ -30,6 +44,7 @@ const AppRoutes = () => {
       <Route path="/donations" element={<ProtectedRoute><Layout><Donations /></Layout></ProtectedRoute>} />
       <Route path="/users" element={<ProtectedRoute><Layout><Users /></Layout></ProtectedRoute>} />
       <Route path="/" element={<Navigate to="/dashboard" />} />
+      <Route path="*" element={<Navigate to="/dashboard" />} />
     </Routes>
   )
 }
